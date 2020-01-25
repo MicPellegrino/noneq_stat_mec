@@ -16,12 +16,14 @@ def variance_position_langevin (g, L, t) :
     b = np.power( -np.exp(-g*t) + 1.0, 2 )
     return (L/(g**2)) * ( t + a/g - 0.5*b/g )
 
-# [a] generate a Wiener process
+# [a] generate a couple of Wiener processes
 
 t_fin = 10.0
 dt = 0.001
 N_sam = math.ceil(t_fin/dt)
-wp = np.sqrt(dt) * standard_wiener_process(N_sam)
+wp1 = np.sqrt(dt) * standard_wiener_process(N_sam)
+wp2 = np.sqrt(dt) * standard_wiener_process(N_sam)
+wp3 = np.sqrt(dt) * standard_wiener_process(N_sam)
 t_vec = np.arange(0, t_fin, dt)
 
 # [b] estimate velocity variance
@@ -76,7 +78,9 @@ x2_var = x2_diff2.mean(axis=1)
 # Plotting
 
 plt.figure(1)
-plt.plot(t_vec, wp, 'k-')
+plt.plot(t_vec, wp1, 'k-')
+plt.plot(t_vec, wp2, 'b-')
+plt.plot(t_vec, wp3, 'r-')
 plt.xlim([0,t_fin])
 plt.xlabel('t')
 plt.ylabel('w(t)')
