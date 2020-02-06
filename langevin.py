@@ -30,7 +30,6 @@ t_vec = np.arange(0, t_fin, dt)
 
 gamma = np.array([0.1, 1.0])
 Lambda = np.array([1.0, 2.0])
-v_0 = 10.0   # Otherwise it has no sense at all!
 
 alpha_0 = -dt*gamma+1
 alpha_1 = np.sqrt( dt*Lambda )
@@ -46,14 +45,18 @@ v2_matrix = np.zeros((N_sam, M_avg), dtype=np.double)
 v1_matrix[ 0, : ] = v_0
 v2_matrix[ 0, : ] = v_0
 for k in range(0, N_sam-1) :
-    v1_matrix[ k+1, : ] = alpha_0[0]*v1_matrix[ k, : ] + alpha_1[0]*np.random.normal(0.0, 1.0, M_avg)
-    v2_matrix[ k+1, : ] = alpha_0[1]*v2_matrix[ k, : ] + alpha_1[1]*np.random.normal(0.0, 1.0, M_avg)
+    v1_matrix[ k+1, : ] = alpha_0[0]*v1_matrix[ k, : ] \
+        + alpha_1[0]*np.random.normal(0.0, 1.0, M_avg)
+    v2_matrix[ k+1, : ] = alpha_0[1]*v2_matrix[ k, : ] \
+        + alpha_1[1]*np.random.normal(0.0, 1.0, M_avg)
 
 v1_mean = v1_matrix.mean(axis=1)
 v2_mean = v2_matrix.mean(axis=1)
 
-v1_diff2 = np.power( ( v1_matrix.transpose() - v1_mean ).transpose(), 2 )
-v2_diff2 = np.power( ( v2_matrix.transpose() - v2_mean ).transpose(), 2 )
+v1_diff2 = np.power( ( v1_matrix.transpose() - \
+    v1_mean ).transpose(), 2 )
+v2_diff2 = np.power( ( v2_matrix.transpose() - \
+    v2_mean ).transpose(), 2 )
 
 v1_var = v1_diff2.mean(axis=1)
 v2_var = v2_diff2.mean(axis=1)
