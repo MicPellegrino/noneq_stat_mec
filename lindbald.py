@@ -78,16 +78,40 @@ for k in range(1,K):
     im_rho[1][1][k] = rho_new[1,1].imag
     rho_old = rho_new
 
+# Save to file
+with open('Lind/re_rho_00.txt', 'w') as f:
+    for item in re_rho[0][0]:
+        f.write("%s\n" % item)
+with open('Lind/re_rho_01.txt', 'w') as f:
+    for item in re_rho[0][1]:
+        f.write("%s\n" % item)
+with open('Lind/re_rho_10.txt', 'w') as f:
+    for item in re_rho[1][0]:
+        f.write("%s\n" % item)
+with open('Lind/re_rho_11.txt', 'w') as f:
+    for item in re_rho[1][1]:
+        f.write("%s\n" % item)
+with open('Lind/im_rho_01.txt', 'w') as f:
+    for item in im_rho[0][1]:
+        f.write("%s\n" % item)
+with open('Lind/im_rho_10.txt', 'w') as f:
+    for item in im_rho[1][0]:
+        f.write("%s\n" % item)
+
 # Plotting
-plt.plot(t, re_rho[0][0], label='rho_ee')
-plt.plot(t, re_rho[1][1], label='rho_gg')
-plt.plot(t, re_rho[0][1], label='Re[rho_eg]')
-plt.plot(t, re_rho[1][0], label='Re[rho_ge]')
-plt.plot(t, im_rho[0][1], label='Im[rho_eg]')
-plt.plot(t, im_rho[1][0], label='Im[rho_ge]')
-plt.plot(t, im_rho[0][0], 'k-')
-plt.plot(t, im_rho[1][1], 'k.')
-plt.legend()
-plt.xlabel('t')
-plt.ylabel('rho')
+plt.plot(t, re_rho[0][0], label=r'$\rho_{ee}$')
+plt.plot(t, re_rho[1][1], label=r'$\rho_{gg}$')
+plt.plot(t, re_rho[0][1], label=r'Re[$\rho_{eg}$]')
+plt.plot(t, re_rho[1][0], label=r'Re[$\rho_{ge}$]')
+plt.plot(t, im_rho[0][1], label=r'Im[$\rho_{eg}$]')
+plt.plot(t, im_rho[1][0], label=r'Im[$\rho_{ge}$]')
+plt.plot(t, im_rho[0][0]+im_rho[1][1], 'k--')
+plt.plot(t, re_rho[0][0]+re_rho[1][1], 'r--')
+plt.legend(fontsize=20.0)
+plt.xlim([0,t_fin])
+plt.xlabel(r'$t$', fontsize=20.0)
+plt.ylabel(r'$\rho(t)$', fontsize=20.0)
+plt.xticks(fontsize=20.0)
+plt.yticks(fontsize=20.0)
+plt.title(r'$\omega$=3, $\Gamma$=1, $n$=10', fontsize=20.0)
 plt.show()

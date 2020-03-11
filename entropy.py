@@ -5,10 +5,19 @@ import numpy.random as rng
 import matplotlib.pyplot as plt
 
 def kullback_leibler( x ) :
-    return -np.sum(x*np.log(x))
+    return -np.sum(x*np.log2(x))
 
 def complex_random_vector ( n ) :
     return np.exp(1j*rng.uniform(0.0,2*np.pi,n))*rng.uniform(0.0,1.0,n)
+    # return rng.uniform(-1.0,1.0,n)+1j*rng.uniform(-1.0,1.0,n)
+    # rv = np.zeros(n, dtype=complex)
+    # for i in range(n) :
+    #     while True :
+    #         val = rng.uniform(-1.0,1.0)+1j*rng.uniform(-1.0,1.0)
+    #         if val.real**2+val.imag**2 <= 1 :
+    #             break
+    #     rv[i] = val
+    # return rv
 
 def random_state( n ):
     psi = complex_random_vector(n)
@@ -50,17 +59,29 @@ S = np.zeros((M, len(N_vec)), dtype=float)
 for i in range(len(N_vec)) :
     N = N_vec[i]
     n = int(2**N)
+    #####################################################
+    # TESTING CORRECTNESS OF ENTROPY CALCULATION
+    P = np.eye( int(sqrt(n)) )
+    psi = np.reshape(P, (n,1))
+    psi = psi/la.norm(psi)
+    P = np.reshape(psi, ( int(sqrt(n)), int(sqrt(n)) ))
+    _, D, _ = la.svd(P)
+    sig = D*D
+    print(sig)
+    print('Maximum entropy: S(N='+str(N)+')='+str(entropy(psi)))
+    #####################################################
     for j in range(M) :
         psi = random_state(n)
         S[j,i] = entropy(psi)
 S_mean = np.mean(S, axis=0)
 S_std = np.std(S,axis=0)
-print(S_mean)
-print(S_std)
+# print(S_mean)
+# print(S_std)
 
-plt.plot(N_vec, 0.5*N_vec, 'b-', label='Theoretical limit')
-# plt.errorbar(N_vec, S_mean, yerr=S_std, fmt='x', color='b', ls='none', capsize=5, label='Mean')
-plt.boxplot(S, positions=N_vec)
+plt.plot(N_vec, 0.5*N_vec, 'r-', label='Theoretical limit', linewidth=1.5)
+plt.errorbar(N_vec, S_mean, yerr=S_std, fmt='x', color='k', ls='none', capsize=5, label='Computed', markersize=7.5, linewidth=1.5)
+# plt.boxplot(S, positions=N_vec)
+plt.violinplot(S, positions=N_vec, showmeans=False, showmedians=False, showextrema=False)
 # plt.plot(N_vec, S.transpose(), 'k.', markersize=0.25)
 plt.legend(loc='upper left', fontsize=20.0)
 plt.xlabel('N', fontsize=20.0)
