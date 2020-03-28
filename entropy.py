@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 def kullback_leibler( x ) :
     return -np.sum(x*np.log2(x))
+    # return -np.sum(x*np.log(x))
 
 def complex_random_vector ( n ) :
     return np.exp(1j*rng.uniform(0.0,2*np.pi,n))*rng.uniform(0.0,1.0,n)
@@ -79,6 +80,7 @@ S_std = np.std(S,axis=0)
 # print(S_std)
 
 plt.plot(N_vec, 0.5*N_vec, 'r-', label='Theoretical limit', linewidth=1.5)
+plt.plot(N_vec, 0.5*N_vec-0.5/np.log(2), 'g--', label='<S> (Page 1993)', linewidth=1.25)
 plt.errorbar(N_vec, S_mean, yerr=S_std, fmt='x', color='k', ls='none', capsize=5, label='Computed', markersize=7.5, linewidth=1.5)
 # plt.boxplot(S, positions=N_vec)
 plt.violinplot(S, positions=N_vec, showmeans=False, showmedians=False, showextrema=False)
